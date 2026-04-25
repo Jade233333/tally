@@ -46,4 +46,8 @@ Domains is the list of website that you want the timer to track.
     - won't be too fancy as it intends to be lightweight and tidy
     - but will provide more basics including changing font
 - export data
+    - it will be hard to implement
+    - as right now GM storage is being used
+    - only key value pair available and no direct file access
+    - will not be easy to manage data over time
 - interative way for config
