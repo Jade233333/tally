@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Web Timer
+// @name         Tally
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  Show time spend on website this day
-// @author       Zhou
+// @description  Show time spend on website today
+// @author       Jade233333
 // @match        *://www.youtube.com/*
 // @match        *://www.youtube.com/*
 // @grant        GM_getValue
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    // create emtpy timer dispaly template
+    // create emtpy timer dispaly element template
     function createTimerDisplay() {
         const timerDisplay = document.createElement('div');
         timerDisplay.id = 'timer-display';
@@ -32,24 +32,21 @@
         return timerDisplay;
     }
 
-    // update timer on display with data
+    // update timer on display with data provided
     function updateTimerDisplay(timerDisplay, totalSeconds, opacity) {
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
+        // ensures 2 digit display 00
         const pad = (n) => String(n).padStart(2, '0');
         timerDisplay.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
         timerDisplay.style.color = `rgba(0, 0, 0, ${opacity})`;
     }
 
-    // consider per top domain
-    function getTopDomain() {
-        const parts = location.hostname.split('.');
-        return parts.slice(-2).join('.');
-    }
 
     // 2026-01-01
     function getToday() {
+        // the Date object
         const d = new Date();
         const y = d.getFullYear();
         const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -58,7 +55,12 @@
     }
 
     // init GM storage if empty
+    // return the domain name for later use
     function initializeDomain() {
+        //  get the topdomain, consider topdomain per record 
+        const parts = location.hostname.split('.');
+        domain = parts.slice(-2).join('.');
+
         const domain = getTopDomain();
         const dayKey = domain + '_day';
         const timeKey = domain + '_time';
@@ -76,6 +78,7 @@
         return domain;
     }
 
+    // update the GM storage for watching time per second
     function incrementTime(domain) {
         const timeKey = domain + '_time';
         // ensure number not string
@@ -84,6 +87,7 @@
         return current + 1;
     }
 
+    // determine opacity value based on limit user set and current time spending
     function calcOpacity(seconds, limit) {
         return Math.min(seconds / limit, 1);
     }
@@ -100,7 +104,7 @@
     setInterval(() => {
         if (document.visibilityState === 'visible') {
             const secs = incrementTime(domain);
-            const opacity = calcOpacity(secs, 180);
+            const opacity = calcOpacity(secs, 1800);
             updateTimerDisplay(timerDisplay, secs, opacity);
         }
     }, 1000);
