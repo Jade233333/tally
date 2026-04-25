@@ -4,8 +4,7 @@
 // @version      0.1
 // @description  Show time spend on website today
 // @author       Jade233333
-// @match        *://www.youtube.com/*
-// @match        *://www.youtube.com/*
+// @match        *://*/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
@@ -13,6 +12,15 @@
 
 (function() {
     'use strict';
+
+    // confgi
+    const CONFIG = {
+        limit: 1800,
+        domains: [
+            'youtube.com',
+        ],
+    };
+
 
     // create emtpy timer dispaly element template
     function createTimerDisplay() {
@@ -27,6 +35,8 @@
             font-family: monospace;
             z-index: 2147483647;
             pointer-events: none;
+            padding: 16px 32px;
+            border-radius: 12px;
         `;
         document.body.appendChild(timerDisplay);
         return timerDisplay;
@@ -41,6 +51,7 @@
         const pad = (n) => String(n).padStart(2, '0');
         timerDisplay.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
         timerDisplay.style.color = `rgba(0, 0, 0, ${opacity})`;
+        timerDisplay.style.background = `rgba(255, 255, 255, ${opacity})`;
     }
 
 
@@ -55,13 +66,7 @@
     }
 
     // init GM storage if empty
-    // return the domain name for later use
-    function initializeDomain() {
-        //  get the topdomain, consider topdomain per record 
-        const parts = location.hostname.split('.');
-        domain = parts.slice(-2).join('.');
-
-        const domain = getTopDomain();
+    function initializeDomain(domain) {
         const dayKey = domain + '_day';
         const timeKey = domain + '_time';
 
@@ -74,8 +79,6 @@
             GM_setValue(dayKey, getToday());
             GM_setValue(timeKey, 0);
         }
-
-        return domain;
     }
 
     // update the GM storage for watching time per second
@@ -89,22 +92,39 @@
 
     // determine opacity value based on limit user set and current time spending
     function calcOpacity(seconds, limit) {
-        return Math.min(seconds / limit, 1);
+        return Math.min(seconds / limit, 0.9);
+    }
+
+    // if match, run!!!
+    function matchDomain() {
+        const host = location.hostname;
+
+        for (const domain of CONFIG.domains) {
+            // check perfect match or contain
+            // add . to prevent something like notyoutube.com to match
+            if (host === domain || host.endsWith('.' + domain)) {
+                return domain;  // use the config entry as the storage key
+            }
+        }
+        return null;  // not in the list, don't track
     }
 
     // test code here to clear previous data
     // GM_deleteValue("youtube.com_time");
-    // GM_deleteValue("youtube.com_date");
+    // GM_deleteValue("youtube.com_day");
 
     // init
-    const domain = initializeDomain();
+    const domain = matchDomain();
+    // if not match stop the script entirely
+    if (domain === null) { return; }
+    initializeDomain(domain);
     const timerDisplay = createTimerDisplay();
 
     // main loop
     setInterval(() => {
         if (document.visibilityState === 'visible') {
             const secs = incrementTime(domain);
-            const opacity = calcOpacity(secs, 1800);
+            const opacity = calcOpacity(secs, CONFIG.limit);
             updateTimerDisplay(timerDisplay, secs, opacity);
         }
     }, 1000);
