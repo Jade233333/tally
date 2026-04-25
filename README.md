@@ -15,6 +15,12 @@ the installation won't be hard.
 Some managers even provide an interative way to install 
 so one may simply copy the raw code and paste into.
 
+If one happens to use a fancier browser like
+[qutebrowser](https://github.com/qutebrowser/qutebrowser)
+(really good project btw),
+one has to find out how to install greasemonkey scripts on the browser's docs.
+It might not even be a supported feature, very unlikey though.
+
 ## Usage
 
 Currently, one has to modify the source code to config the script.
