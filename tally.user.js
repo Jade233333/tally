@@ -139,7 +139,7 @@
 
     // main loop
     setInterval(() => {
-        if (document.visibilityState === 'visible') {
+        if (document.visibilityState === 'visible' && document.hasFocus()) {
             const secs = incrementTime(domain);
             const opacity = calcOpacity(secs, CONFIG.limit);
             updateTimerDisplay(timerDisplay, secs, opacity);
