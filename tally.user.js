@@ -21,7 +21,7 @@
             'youtube.com',
         ],
         style: {
-            fontSize: '72px',
+            fontSize: '128px',
         },
     };
 
@@ -46,6 +46,7 @@
             left :'50%',
             transform :'translate(-50%, -50%)',
             'z-index' :'2147483647',
+            'pointer-events' :'none',
         }
         const timerDisplay = document.createElement('div');
         timerDisplay.id = 'timer-display';
