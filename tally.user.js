@@ -13,31 +13,48 @@
 (function() {
     'use strict';
 
+
     // confgi
     const CONFIG = {
         limit: 1800,
         domains: [
             'youtube.com',
         ],
+        style: {
+            fontSize: '72px',
+        },
     };
 
 
+    function applyStyle(el, style) {
+        for (const [k, v] of Object.entries(style)) {
+            el.style[k] = v;
+        }
+    }
+
     // create emtpy timer dispaly element template
     function createTimerDisplay() {
+        const DEFAULTS = {
+            fontSize: '64px',
+            fontFamily: 'monospace',
+            padding: '16px 32px',
+            borderRadius: '12px',
+        };
+        const ENFORCED = {
+            position :'fixed',
+            top :'50%',
+            left :'50%',
+            transform :'translate(-50%, -50%)',
+            'z-index' :'2147483647',
+        }
         const timerDisplay = document.createElement('div');
         timerDisplay.id = 'timer-display';
-        timerDisplay.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 64px;
-            font-family: monospace;
-            z-index: 2147483647;
-            pointer-events: none;
-            padding: 16px 32px;
-            border-radius: 12px;
-        `;
+        // first oad defualts
+        // then overwritten by user's
+        // then enforced to ensure critical features
+        applyStyle(timerDisplay, DEFAULTS);
+        applyStyle(timerDisplay, CONFIG.style);
+        applyStyle(timerDisplay, ENFORCED);
         document.body.appendChild(timerDisplay);
         return timerDisplay;
     }

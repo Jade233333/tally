@@ -33,6 +33,9 @@ const CONFIG = {
     domains: [
         'youtube.com',
     ],
+    style: {
+        fontSize: '72px',
+    },
 };
 ```
 
@@ -41,13 +44,17 @@ for the timer to turn completely solid(0.9 opacity)
 
 Domains is the list of website that you want the timer to track.
 
+The style is just `css` applied, so basically anything can be cusmoized
+if one knows how to use `css`. 
+Common properties that one may want to change include
+`fontSize`, `fontFamily`, `color`.
+
 ## Todo
 - more customization.
-    - won't be too fancy as it intends to be lightweight and tidy
-    - but will provide more basics including changing font
+    - ai-generated themes maybe?
 - export data
     - it will be hard to implement
     - as right now GM storage is being used
     - only key value pair available and no direct file access
-    - will not be easy to manage data over time
+    - will not be easy to find a way to manage data over time cleanly
 - interative way for config
