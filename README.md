@@ -57,5 +57,5 @@ Common properties that one may want to change include
     - as right now GM storage is being used
     - only key value pair available and no direct file access
     - will not be easy to find a way to manage data over time cleanly
-- interative way for config
+- interative approach for config
 - complete block time limit
