@@ -50,6 +50,7 @@ Common properties that one may want to change include
 `fontSize`, `fontFamily`, `color`.
 
 ## Todo
+- night mode
 - more customization.
     - ai-generated themes maybe?
 - export data

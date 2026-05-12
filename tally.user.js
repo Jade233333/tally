@@ -39,6 +39,8 @@
             fontFamily: 'monospace',
             padding: '16px 32px',
             borderRadius: '12px',
+            color: 'white',
+            background: 'black',
         };
         const ENFORCED = {
             position :'fixed',
@@ -68,8 +70,7 @@
         // ensures 2 digit display 00
         const pad = (n) => String(n).padStart(2, '0');
         timerDisplay.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-        timerDisplay.style.color = `rgba(0, 0, 0, ${opacity})`;
-        timerDisplay.style.background = `rgba(255, 255, 255, ${opacity})`;
+        timerDisplay.style.opacity = opacity;
     }
 
 
