@@ -1,5 +1,9 @@
 # Tally
 
+> This script will unlikely be updated anymore.
+> It was a nice small project done to get to know userscript and web dev,
+> but the idea itself is not so useful.
+
 A userscript that tracks and displays time spent on configured websites. 
 Shows a persistent timer overlay to help remind of your daily usage.
 The opacity increases as more time spent on a configured website.
